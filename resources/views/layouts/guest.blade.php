@@ -10,11 +10,16 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        @production
+            @php
+                $manifest = json_decode(file_get_contents(asset('build/manifest.json')), true);
+            @endphp
+            <script type="module" src="{{ asset("build/{$manifest['resources/js/app.js']['file']}") }}"></script>
+            <link rel="stylesheet" href="{{ asset("build/{$manifest['resources/css/app.css']['file']}") }}">
+            @else
+                @vite(['resources/css/app.css', 'resources/js/app.js'])
+                @endproduction
+                @stack('css')
     </head>
     <body>
         <div class="font-sans text-gray-900 antialiased">
