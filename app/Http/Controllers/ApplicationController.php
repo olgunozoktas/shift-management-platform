@@ -13,9 +13,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationController extends Controller
 {
+    public function index()
+    {
+        if (!isAdmin()) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        }
+
+        $pendingApplications = \App\Models\Application::query()
+            ->with('user')
+            ->where('status', 'pending')->get();
+        return view('pages.applications.index', compact('pendingApplications'));
+    }
+
     public function create(): Factory|View|Application|RedirectResponse
     {
         if (hasApplication()) {

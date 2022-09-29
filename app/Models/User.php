@@ -91,4 +91,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(JobRole::class, 'job_role_id');
     }
+
+    public function userDocuments(): HasMany
+    {
+        return $this->hasMany(UserDocument::class);
+    }
 }

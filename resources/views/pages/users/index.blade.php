@@ -43,9 +43,9 @@
                             </th>
                             <td class="py-2">{{ $user->email }}</td>
                             <td class="py-2">{{ $user->role }}</td>
-                            <td class="py-2">{{ $user->company->name }}</td>
-                            <td class="py-2">{{ ucfirst(str_replace('_', ' ', $user->companyUser?->company_role)) }}</td>
-                            <td class="py-2">{{ $user->jobRole?->definition }}</td>
+                            <td class="py-2">{{ $user->company?->name ?? '-' }}</td>
+                            <td class="py-2">{{ ucfirst(str_replace('_', ' ', $user->companyUser?->company_role ?? '-')) }}</td>
+                            <td class="py-2">{{ $user->jobRole?->definition ?? '-' }}</td>
                             <td class="flex flex-row items-center justify-center gap-2 py-2">
                                 <a href="{{ route('users.edit', $user->id) }}"
                                    class="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg">Edit</a>

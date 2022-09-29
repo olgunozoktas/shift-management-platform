@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\ApplicationProcessController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyUserController;
 use App\Http\Controllers\DashboardController;
@@ -41,6 +42,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('applications', ApplicationController::class);
+    Route::post('application/{application}/approve', [ApplicationProcessController::class, 'approve'])->name('applications.approve');
+    Route::post('application/{application}/reject', [ApplicationProcessController::class, 'reject'])->name('applications.reject');
 });
 
 require __DIR__ . '/auth.php';

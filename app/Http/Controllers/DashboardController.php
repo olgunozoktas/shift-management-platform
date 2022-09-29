@@ -18,14 +18,14 @@ class DashboardController extends Controller
             return view('company_dashboard');
         }
 
-        if (!hasApplication()) {
-            return redirect()->route('applications.create');
-        }
-
         $application = \App\Models\Application::query()
             ->where('user_id', Auth::id())
             ->orderByDesc('id')
             ->first();
+
+        if (!$application) {
+            return redirect()->route('applications.create');
+        }
 
         return view('contract_staff_dashboard', compact('application'));
     }
