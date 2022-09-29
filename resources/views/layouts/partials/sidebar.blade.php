@@ -104,7 +104,17 @@
                 Pending Approvals ({{ \App\Models\User::where('status','pending')->count() }})
             </a>
         @else
-
+            @if(!hasApplication())
+                <a class="text-gray-100 {{ in_array(getCurrentRouteName(), ['application.create']) ? 'bg-black border-l-4 border-blue-900' : 'border-l-4 border-transparent' }} flex items-center py-2.5 px-6 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 gap-2"
+                   href="{{ route('applications.create') }}">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                    </svg>
+                    Application
+                </a>
+            @endif
         @endif
 
         <a class="block md:hidden text-gray-100 border-l-4 border-transparent flex items-center py-2.5 px-6 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 gap-2"
