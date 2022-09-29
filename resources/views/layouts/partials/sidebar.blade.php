@@ -103,6 +103,8 @@
                 </svg>
                 Pending Approvals ({{ \App\Models\User::where('status','pending')->count() }})
             </a>
+        @else
+
         @endif
 
         <a class="block md:hidden text-gray-100 border-l-4 border-transparent flex items-center py-2.5 px-6 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 gap-2"

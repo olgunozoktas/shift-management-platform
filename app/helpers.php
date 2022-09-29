@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Application;
 use App\Models\CompanyUser;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -63,5 +64,15 @@ if (!function_exists('getCompany')) {
         }
 
         return null;
+    }
+}
+
+if (!function_exists('hasApplication')) {
+    function hasApplication(): bool
+    {
+        $hasActiveApplication = Application::query()->where('user_id', Auth::id())
+            ->whereIn('status', ['pending', 'approved'])->count();
+
+        return $hasActiveApplication > 0;
     }
 }

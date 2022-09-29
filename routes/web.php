@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyUserController;
 use App\Http\Controllers\DashboardController;
@@ -38,6 +39,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('shifts', ShiftController::class);
         Route::post('shifts-list', [ShiftController::class, 'list'])->name('shifts.list');
     });
+
+    Route::resource('applications', ApplicationController::class);
 });
 
 require __DIR__ . '/auth.php';

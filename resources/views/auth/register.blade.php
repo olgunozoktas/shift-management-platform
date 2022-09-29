@@ -11,7 +11,7 @@
 
         <form method="POST" action="{{ route('register') }}">
             @csrf
-
+            <h1 class="text-2xl text-center text-black my-2">Registration Form</h1>
             <!-- Name -->
             <div>
                 <x-label for="name" :value="__('Name')" />

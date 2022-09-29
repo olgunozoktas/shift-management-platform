@@ -17,6 +17,6 @@ class DashboardController extends Controller
             return view('company_dashboard');
         }
 
-        return view('contract_staff_dashboard');
+        return redirect()->route('applications.create');
     }
 }
