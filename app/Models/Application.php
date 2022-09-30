@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
  * @property mixed notes
  * @property mixed created_at
  * @property mixed updated_at
+ * @property User user
  */
 class Application extends Model
 {

@@ -41,12 +41,8 @@
                                 {{ $pendingApplication->user->userDocuments?->count() ?? 0 }}
                             </th>
                             <td class="flex flex-row items-center justify-center gap-2 py-2">
-                                <button onclick="approveApplication({{ $pendingApplication->id }})"
-                                   class="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg">Approve</button>
-                                <button onclick="rejectApplication({{ $pendingApplication->id }})"
-                                        class="py-2 px-4 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg">
-                                    Reject
-                                </button>
+                                <a href="{{ route('applications.show', $pendingApplication->id) }}"
+                                   class="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg">Details</a>
                             </td>
                         </tr>
                     @endforeach
@@ -59,44 +55,7 @@
             </table>
         </section>
     </section>
-
-    <form action="" method="POST" id="approve_application_form">
-        @csrf
-    </form>
-
-    <form action="" method="POST" id="reject_application_form">
-        @csrf
-        <input type="hidden" name="reason" id="reason">
-    </form>
 @endsection
 
 @push('js')
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script>
-        function approveApplication(id) {
-            if (confirm('Would you like to approve this application?')) {
-                let route = '{{ route('applications.approve', ':id') }}';
-                route = route.replace(':id', id);
-
-                $("#approve_application_form").attr('action', route).submit();
-            }
-        }
-
-        function rejectApplication(id) {
-            if (confirm('Would you like to reject this application?')) {
-                let route = '{{ route('applications.reject', ':id') }}';
-                route = route.replace(':id', id);
-
-                let reason = prompt('Please enter the reason');
-
-                if (reason == null || reason === "") {
-                    alert("You have to enter reason to reject this application");
-                    return;
-                }
-
-                $("#reason").val(reason);
-                $("#reject_application_form").attr('action', route).submit();
-            }
-        }
-    </script>
 @endpush

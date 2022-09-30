@@ -5,6 +5,7 @@ use App\Http\Controllers\ApplicationProcessController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserDocumentController;
 use App\Http\Controllers\JobRoleController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\UserController;
@@ -42,8 +43,11 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('applications', ApplicationController::class);
-    Route::post('application/{application}/approve', [ApplicationProcessController::class, 'approve'])->name('applications.approve');
-    Route::post('application/{application}/reject', [ApplicationProcessController::class, 'reject'])->name('applications.reject');
+    Route::post('/application/{application}/approve', [ApplicationProcessController::class, 'approve'])->name('applications.approve');
+    Route::post('/application/{application}/reject', [ApplicationProcessController::class, 'reject'])->name('applications.reject');
+    Route::get('/application/{application}/show', [ApplicationProcessController::class, 'show'])->name('application.show');
+
+    Route::resource('user-documents', UserDocumentController::class);
 });
 
 require __DIR__ . '/auth.php';

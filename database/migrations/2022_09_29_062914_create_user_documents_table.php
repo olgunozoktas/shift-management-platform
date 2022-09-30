@@ -20,6 +20,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('document_type_id');
             $table->foreign('document_type_id')->references('id')->on('document_types');
             $table->string('document_path');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }

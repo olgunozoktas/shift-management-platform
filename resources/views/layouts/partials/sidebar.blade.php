@@ -63,7 +63,7 @@
                 Companies
             </a>
 
-            <a class="text-gray-100 {{ getCurrentRouteName() == 'applications.index' ? 'bg-black border-l-4 border-blue-900' : 'border-l-4 border-transparent' }} flex items-center py-2.5 px-6 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 gap-2"
+            <a class="text-gray-100 {{ in_array(getCurrentRouteName(), ['applications.index','applications.show']) ? 'bg-black border-l-4 border-blue-900' : 'border-l-4 border-transparent' }} flex items-center py-2.5 px-6 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 gap-2"
                href="{{ route('applications.index') }}">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                      xmlns="http://www.w3.org/2000/svg">

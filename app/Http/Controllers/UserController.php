@@ -22,7 +22,10 @@ class UserController extends Controller
 {
     public function index(): Factory|View|Application
     {
-        $users = User::with(['company', 'companyUser', 'jobRole'])->where('id', '<>', Auth::id())->paginate(15);
+        $users = User::with(['company', 'companyUser', 'jobRole'])
+            ->where('id', '<>', Auth::id())
+            ->whereNotIn('status', ['pending', 'rejected'])
+            ->paginate(15);
         return view('pages.users.index', compact('users'));
     }
 
@@ -48,7 +51,8 @@ class UserController extends Controller
             $user->email = $request->input('email');
             $user->password = Hash::make($request->input('password'));
             $user->role = $request->input('role');
-            $user->status = $request->input('status');
+//            $user->status = $request->input('status');
+            $user->status = User::APPROVED;
             $user->phone_no = $request->input('phone_no');
             $user->job_role_id = $request->input('job_role');
             $user->save();
@@ -100,7 +104,7 @@ class UserController extends Controller
             }
 
             $user->role = $request->input('role');
-            $user->status = $request->input('status');
+//            $user->status = $request->input('status');
             $user->phone_no = $request->input('phone_no');
             $user->job_role_id = $request->input('job_role');
 

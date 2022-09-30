@@ -68,7 +68,7 @@
             <span class="text-red-500">{{ $message }}</span>
             @enderror
 
-            <p class="text-lg my-4 border-b pb-2 border-gray-200">Role and Status</p>
+            <p class="text-lg my-4 border-b pb-2 border-gray-200">Role</p>
 
             <label class="block">
                 <span class="text-gray-700">Role Selector</span>
@@ -89,28 +89,28 @@
             <span class="text-red-500">{{ $message }}</span>
             @enderror
 
-            <label class="block">
-                <span class="text-gray-700">Status Selector</span>
-                <select required name="status"
-                        class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                    <option value="pending"
-                            @if(old('status', isset($user) ? $user->status : '') == 'pending') selected @endif>
-                        Pending
-                    </option>
-                    <option value="approved"
-                            @if(old('status', isset($user) ? $user->status : '') == 'approved') selected @endif>
-                        Approved
-                    </option>
-                    <option value="rejected"
-                            @if(old('status', isset($user) ? $user->status : '') == 'rejected') selected @endif>
-                        Rejected
-                    </option>
-                </select>
-            </label>
+{{--            <label class="block">--}}
+{{--                <span class="text-gray-700">Status Selector</span>--}}
+{{--                <select required name="status"--}}
+{{--                        class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">--}}
+{{--                    <option value="pending"--}}
+{{--                            @if(old('status', isset($user) ? $user->status : '') == 'pending') selected @endif>--}}
+{{--                        Pending--}}
+{{--                    </option>--}}
+{{--                    <option value="approved"--}}
+{{--                            @if(old('status', isset($user) ? $user->status : '') == 'approved') selected @endif>--}}
+{{--                        Approved--}}
+{{--                    </option>--}}
+{{--                    <option value="rejected"--}}
+{{--                            @if(old('status', isset($user) ? $user->status : '') == 'rejected') selected @endif>--}}
+{{--                        Rejected--}}
+{{--                    </option>--}}
+{{--                </select>--}}
+{{--            </label>--}}
 
-            @error('status')
-            <span class="text-red-500">{{ $message }}</span>
-            @enderror
+{{--            @error('status')--}}
+{{--            <span class="text-red-500">{{ $message }}</span>--}}
+{{--            @enderror--}}
 
             <label class="block">
                 <span class="text-gray-700">Phone Number (Country code must be entered)</span>
