@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
+use App\Models\JobRole;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -27,6 +29,8 @@ class DashboardController extends Controller
             return redirect()->route('applications.create');
         }
 
-        return view('contract_staff_dashboard', compact('application'));
+        $company = Company::query()->find(getCompany());
+        $jobRole = JobRole::query()->find(getCurrentUser()->job_role_id);
+        return view('contract_staff_dashboard', compact('application', 'company', 'jobRole'));
     }
 }
