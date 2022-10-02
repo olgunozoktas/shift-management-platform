@@ -35,6 +35,24 @@
             @if($isEdit)
                 @method('PUT')
             @endif
+
+            <label class="block">
+                <span class="text-gray-700">Company Selector</span>
+                <select required name="company_id"
+                        class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    @foreach($companies as $company)
+                        <option value="{{ $company->id }}"
+                                @if(old('company_id', isset($shift) ? $shift->company_id : '') == $company->id) selected @endif>
+                            {{ $company->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </label>
+
+            @error('job_role_id')
+            <span class="text-red-500">{{ $message }}</span>
+            @enderror
+
             <label class="block">
                 <span class="text-gray-700">Date & Time of Shift</span>
                 <input type="datetime-local" name="date_time"

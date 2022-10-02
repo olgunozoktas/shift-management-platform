@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\JobRoleStoreRequest;
 use App\Http\Requests\ShiftStoreRequest;
+use App\Models\Company;
 use App\Models\CompanyUser;
 use App\Models\JobRole;
 use App\Models\Shift;
@@ -13,14 +14,14 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShiftController extends Controller
 {
     public function index(): Factory|View|Application|JsonResponse
     {
-        $shifts = Shift::query()->where('company_id', getCompany())->paginate(15);
-        return view('pages.companies.shifts.index', compact('shifts'));
+        return view('pages.companies.shifts.index');
     }
 
     public function create(): Factory|View|Application
@@ -28,7 +29,8 @@ class ShiftController extends Controller
         $isEdit = false;
         $route = route('shifts.store');
         $jobRoles = JobRole::all();
-        return view('pages.companies.shifts.manage', compact('isEdit', 'route', 'jobRoles'));
+        $companies = getMyCompanies();
+        return view('pages.companies.shifts.manage', compact('isEdit', 'route', 'jobRoles', 'companies'));
     }
 
     /**
@@ -37,8 +39,12 @@ class ShiftController extends Controller
      */
     public function store(ShiftStoreRequest $request): RedirectResponse
     {
+        if(!in_array($request->input('company_id'), getMyCompanyIds())) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        }
+
         $shift = new Shift();
-        $shift->company_id = getCompany();
+        $shift->company_id = $request->input('company_id');
         $shift->date_time = $request->input('date_time');
         $shift->type = $request->input('type');
         $shift->job_role_id = $request->input('job_role_id');
@@ -53,8 +59,8 @@ class ShiftController extends Controller
         $isEdit = true;
         $route = route('shifts.update', $shift->id);
         $jobRoles = JobRole::all();
-
-        return view('pages.companies.shifts.manage', compact('isEdit', 'route', 'shift', 'jobRoles'));
+        $companies = getMyCompanies();
+        return view('pages.companies.shifts.manage', compact('isEdit', 'route', 'shift', 'jobRoles','companies'));
     }
 
     /**
@@ -64,6 +70,17 @@ class ShiftController extends Controller
      */
     public function update(Shift $shift, ShiftStoreRequest $request): RedirectResponse
     {
+        $myCompanyIds = getMyCompanyIds();
+
+        if(!in_array($shift->company_id, $myCompanyIds)) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        }
+
+        if(!in_array($request->input('company_id'), $myCompanyIds)) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        }
+
+        $shift->company_id = $request->input('company_id');
         $shift->date_time = $request->input('date_time');
         $shift->type = $request->input('type');
         $shift->job_role_id = $request->input('job_role_id');
@@ -81,24 +98,5 @@ class ShiftController extends Controller
 
         $shift->delete();
         return redirect()->route('shifts.index')->with('success', 'Shift Successfully Deleted');
-    }
-
-    public function list(Request $request): JsonResponse
-    {
-        $shifts = Shift::query()
-            ->whereBetween('date_time', [$request->input('start'), $request->input('end')])
-            ->where('company_id', getCompany())->get();
-
-        $shifts = $shifts->map(function($shift) {
-            $obj = new \StdClass;
-            $obj->title = $shift->text;
-            $obj->start = $shift->date_time;
-            $obj->color = $shift->assigned_user_id == null ? 'green' : 'red';
-            $obj->backgroundColor = 'red';
-            $obj->borderColor = 'red';
-            return $obj;
-        });
-
-        return response()->json($shifts);
     }
 }

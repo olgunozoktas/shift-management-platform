@@ -22,10 +22,11 @@ class UserController extends Controller
 {
     public function index(): Factory|View|Application
     {
-        $users = User::with(['company', 'companyUser', 'jobRole'])
+        $users = User::with(['companies.company', 'companyUser', 'jobRole'])
             ->where('id', '<>', Auth::id())
             ->whereNotIn('status', ['pending', 'rejected'])
             ->paginate(15);
+
         return view('pages.users.index', compact('users'));
     }
 
@@ -57,11 +58,13 @@ class UserController extends Controller
             $user->job_role_id = $request->input('job_role');
             $user->save();
 
-            $companyUser = new CompanyUser();
-            $companyUser->user_id = $user->id;
-            $companyUser->company_id = $request->input('company');
-            $companyUser->company_role = $request->input('company_role');
-            $companyUser->save();
+            foreach ($request->input('companies') as $key => $company) {
+                $companyUser = new CompanyUser();
+                $companyUser->user_id = $user->id;
+                $companyUser->company_id = $company;
+                $companyUser->company_role = $request->input('company_role');
+                $companyUser->save();
+            }
 
             DB::commit();
             return redirect()->route('users.index')->with('success', 'User Account Successfully Created');
@@ -104,18 +107,22 @@ class UserController extends Controller
             }
 
             $user->role = $request->input('role');
-//            $user->status = $request->input('status');
             $user->phone_no = $request->input('phone_no');
             $user->job_role_id = $request->input('job_role');
 
-            /** @var CompanyUser $companyUser */
-            $companyUser = CompanyUser::query()->firstOrNew([
-                'user_id' => $user->id,
-                'company_id' => $request->input('company')
-            ]);
+            $companies = $request->input('companies');
+            $user->companies()->whereNotIn('company_id', $companies)->delete();
 
-            $companyUser->company_role = $request->input('company_role');
-            $companyUser->save();
+            foreach ($request->input('companies') as $key => $company) {
+                /** @var CompanyUser $companyUser */
+                $companyUser = CompanyUser::query()->firstOrNew([
+                    'user_id' => $user->id,
+                    'company_id' => $company
+                ]);
+
+                $companyUser->company_role = $request->input('company_role');
+                $companyUser->save();
+            }
 
             DB::commit();
             $user->save();

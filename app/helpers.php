@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\Application;
+use App\Models\Company;
 use App\Models\CompanyUser;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -74,5 +76,22 @@ if (!function_exists('hasApplication')) {
             ->whereIn('status', ['pending', 'approved'])->count();
 
         return $hasActiveApplication > 0;
+    }
+}
+
+if (!function_exists('getMyCompanyIds')) {
+    function getMyCompanyIds(): array
+    {
+        return CompanyUser::query()->where('user_id', Auth::id())->pluck('company_id')->toArray();
+    }
+}
+
+if (!function_exists('getMyCompanies')) {
+    function getMyCompanies(): Collection|array
+    {
+        return Company::query()
+            ->select('name', 'companies.id', 'company_role')
+            ->join('company_users', 'companies.id', '=', 'company_id')
+            ->where('company_users.user_id', Auth::id())->get();;
     }
 }

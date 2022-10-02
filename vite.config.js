@@ -8,7 +8,9 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/js/application.jsx'
+                'resources/js/application.jsx',
+                'resources/js/shifts.jsx',
+                'resources/js/company-users.jsx',
             ],
             refresh: true,
         }),

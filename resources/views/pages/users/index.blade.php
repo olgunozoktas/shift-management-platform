@@ -28,7 +28,7 @@
                     <th scope="col" class="px-6 py-3">Name</th>
                     <th scope="col" class="px-6 py-3">Email Address</th>
                     <th scope="col" class="px-6 py-3">Role</th>
-                    <th scope="col" class="px-6 py-3">Assigned Company</th>
+                    <th scope="col" class="px-6 py-3">Assigned Companies</th>
                     <th scope="col" class="px-6 py-3">Company Role</th>
                     <th scope="col" class="px-6 py-3">Job Role</th>
                     <th scope="col" class="px-6 py-3">Actions</th>
@@ -43,7 +43,7 @@
                             </th>
                             <td class="py-2">{{ $user->email }}</td>
                             <td class="py-2">{{ $user->role }}</td>
-                            <td class="py-2">{{ $user->company?->name ?? '-' }}</td>
+                            <td class="py-2">{{ implode(',', $user->companies->pluck('company.name')->toArray() ?? []) ?? '-' }}</td>
                             <td class="py-2">{{ ucfirst(str_replace('_', ' ', $user->companyUser?->company_role ?? '-')) }}</td>
                             <td class="py-2">{{ $user->jobRole?->definition ?? '-' }}</td>
                             <td class="flex flex-row items-center justify-center gap-2 py-2">

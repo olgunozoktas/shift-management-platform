@@ -26,18 +26,27 @@ class UserStoreRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    #[ArrayShape(['name' => "string", 'email' => "string", 'password' => 'string', 'role' => "string"])]
+    #[ArrayShape(['name' => "string", 'email' => "string", 'password' => 'string', 'role' => "string", 'companies' => 'array'])]
     public function rules(): array
     {
         return [
             'name' => 'required|min:2',
             'email' => 'required|unique:users,email',
             'password' => 'required',
-            'role' => 'required'
+            'role' => 'required',
+            'companies' => 'required',
         ];
     }
 
-    #[ArrayShape(['name.required' => "string", 'name.min' => "string", 'email.required' => "string", 'email.unique' => "string", 'password.required' => 'Password must be entered', 'role.required' => "string"])]
+    #[ArrayShape([
+        'name.required' => "string",
+        'name.min' => "string",
+        'email.required' => "string",
+        'email.unique' => "string",
+        'password.required' => 'Password must be entered',
+        'role.required' => "string",
+        'companies.required' => 'array'
+    ])]
     public function messages(): array
     {
         return [
@@ -46,7 +55,8 @@ class UserStoreRequest extends FormRequest
             'email.required' => 'Email must be entered',
             'email.unique' => 'Email is already assigned to another user',
             'password.required' => 'Password must be entered',
-            'role.required' => 'Role must be selected'
+            'role.required' => 'Role must be selected',
+            'companies.required' => 'Company must be selected'
         ];
     }
 }

@@ -30,7 +30,7 @@
             </a>
         </header>
 
-        <form action="{{ $route }}" class="flex flex-col gap-4 mt-4" method="POST">
+        <form action="{{ $route }}" class="flex flex-col gap-4 mt-4" method="POST" autocomplete="off">
             @csrf
             @if($isEdit)
                 @method('PUT')
@@ -89,28 +89,28 @@
             <span class="text-red-500">{{ $message }}</span>
             @enderror
 
-{{--            <label class="block">--}}
-{{--                <span class="text-gray-700">Status Selector</span>--}}
-{{--                <select required name="status"--}}
-{{--                        class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">--}}
-{{--                    <option value="pending"--}}
-{{--                            @if(old('status', isset($user) ? $user->status : '') == 'pending') selected @endif>--}}
-{{--                        Pending--}}
-{{--                    </option>--}}
-{{--                    <option value="approved"--}}
-{{--                            @if(old('status', isset($user) ? $user->status : '') == 'approved') selected @endif>--}}
-{{--                        Approved--}}
-{{--                    </option>--}}
-{{--                    <option value="rejected"--}}
-{{--                            @if(old('status', isset($user) ? $user->status : '') == 'rejected') selected @endif>--}}
-{{--                        Rejected--}}
-{{--                    </option>--}}
-{{--                </select>--}}
-{{--            </label>--}}
+            {{--            <label class="block">--}}
+            {{--                <span class="text-gray-700">Status Selector</span>--}}
+            {{--                <select required name="status"--}}
+            {{--                        class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">--}}
+            {{--                    <option value="pending"--}}
+            {{--                            @if(old('status', isset($user) ? $user->status : '') == 'pending') selected @endif>--}}
+            {{--                        Pending--}}
+            {{--                    </option>--}}
+            {{--                    <option value="approved"--}}
+            {{--                            @if(old('status', isset($user) ? $user->status : '') == 'approved') selected @endif>--}}
+            {{--                        Approved--}}
+            {{--                    </option>--}}
+            {{--                    <option value="rejected"--}}
+            {{--                            @if(old('status', isset($user) ? $user->status : '') == 'rejected') selected @endif>--}}
+            {{--                        Rejected--}}
+            {{--                    </option>--}}
+            {{--                </select>--}}
+            {{--            </label>--}}
 
-{{--            @error('status')--}}
-{{--            <span class="text-red-500">{{ $message }}</span>--}}
-{{--            @enderror--}}
+            {{--            @error('status')--}}
+            {{--            <span class="text-red-500">{{ $message }}</span>--}}
+            {{--            @enderror--}}
 
             <label class="block">
                 <span class="text-gray-700">Phone Number (Country code must be entered)</span>
@@ -127,24 +127,24 @@
 
             <label class="block">
                 <span class="text-gray-700">Company Selector</span>
-                <select required name="company"
+                <select required name="companies[]" multiple id="companies"
                         class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     @foreach($companies as $company)
                         <option value="{{ $company->id }}"
-                                @if(old('company', isset($userCompany) ? $userCompany->id : '') == $company->id) selected @endif>
+                                @if(in_array($company->id, old('companies', $userCompanies ?? []))) selected @endif>
                             {{ $company->name }}
                         </option>
                     @endforeach
                 </select>
             </label>
 
-            @error('company')
+            @error('companies')
             <span class="text-red-500">{{ $message }}</span>
             @enderror
 
             <label class="block">
                 <span class="text-gray-700">Company Role Selector</span>
-                <select required name="company_role"
+                <select required name="company_role" onchange="changeCompanyRole(this.value)"
                         class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <option value="admin"
                             @if(old('company_role', isset($userCompany) ? $userCompany->company_role : '') == 'admin') selected @endif>
@@ -161,7 +161,7 @@
             <span class="text-red-500">{{ $message }}</span>
             @enderror
 
-            <label class="block">
+            <label class="block" id="job-role-selector">
                 <span class="text-gray-700">Job Role Selector</span>
                 <select required name="job_role"
                         class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
@@ -193,4 +193,21 @@
 @endsection
 
 @push('js')
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/selectize.min.js') }}"></script>
+    <script>
+        $(function () {
+            $("#companies").selectize();
+        });
+
+        function changeCompanyRole(value) {
+            if (value === 'admin') {
+                $("#job-role-selector").css('display', 'none');
+            } else {
+                $("#job-role-selector").css('display', 'block');
+            }
+        }
+
+        changeCompanyRole($("select[name=company_role]").val());
+    </script>
 @endpush

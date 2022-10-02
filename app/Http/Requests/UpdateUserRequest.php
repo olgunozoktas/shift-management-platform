@@ -14,7 +14,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(isAdmin() || isSuperAdmin()) {
+        if(isAdmin()) {
             return true;
         }
 
@@ -26,24 +26,36 @@ class UpdateUserRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    #[ArrayShape(['name' => "string", 'email' => "string", 'password' => 'string', 'role' => "string"])]
+    #[ArrayShape(['name' => "string", 'email' => "string", 'password' => 'string', 'role' => "string", 'companies' => 'array'])]
     public function rules(): array
     {
         return [
             'name' => 'required|min:2',
+            'email' => 'required',
             'password' => 'nullable',
-            'role' => 'required'
+            'role' => 'required',
+            'companies' => 'required',
         ];
     }
 
-    #[ArrayShape(['name.required' => "string", 'name.min' => "string", 'password.required' => 'Password must be entered', 'role.required' => "string"])]
+    #[ArrayShape([
+        'name.required' => "string",
+        'name.min' => "string",
+        'email.required' => "string",
+        'email.unique' => "string",
+        'password.required' => 'Password must be entered',
+        'role.required' => "string",
+        'companies.required' => 'array'
+    ])]
     public function messages(): array
     {
         return [
             'name.required' => 'Name must be entered',
             'name.min' => 'Name must be at least 2 characters',
+            'email.required' => 'Email must be entered',
             'password.required' => 'Password must be entered',
-            'role.required' => 'Role must be selected'
+            'role.required' => 'Role must be selected',
+            'companies.required' => 'Company must be selected'
         ];
     }
 }

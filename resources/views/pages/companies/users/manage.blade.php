@@ -19,7 +19,7 @@
     <section class="flex flex-col gap-2">
         <header class="flex flex-row items-center justify-between border-b border-gray-200 pb-4">
             <h1 class="text-black font-black text-lg">{{ 'Edit Company User' }}</h1>
-            <a href="{{ route('company-users.index') }}"
+            <a href="{{ route('company-users.show', $companyUser->company_id) }}"
                class="flex items-center gap-2 text-black font-black py-2 px-4 rounded-full">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                      xmlns="http://www.w3.org/2000/svg">

@@ -5,6 +5,7 @@ use App\Http\Controllers\ApplicationProcessController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CompanyUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MyCompanyController;
 use App\Http\Controllers\UserDocumentController;
 use App\Http\Controllers\JobRoleController;
 use App\Http\Controllers\ShiftController;
@@ -37,9 +38,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('company_admin')->group(function () {
+        Route::get('/my-companies', [MyCompanyController::class, 'index'])->name('my-companies.index');
+        Route::get('/company-users/{company}', [CompanyUserController::class, 'show'])->name('company-users.show');
         Route::resource('company-users', CompanyUserController::class);
         Route::resource('shifts', ShiftController::class);
-        Route::post('shifts-list', [ShiftController::class, 'list'])->name('shifts.list');
     });
 
     Route::resource('applications', ApplicationController::class);
