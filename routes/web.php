@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/shift-applications', [ShiftRequestController::class, 'index'])->name('shift-requests.index');
         Route::get('/shift-applications/{company}', [ShiftRequestController::class, 'show'])->name('shift-requests.show');
         Route::get('/shift-applications/{shiftRequest}/details', [ShiftRequestController::class, 'details'])->name('shift-requests.details');
-        Route::put('/shift-applications/process', [ShiftRequestController::class, 'process'])->name('shift-requests.process');
+        Route::post('/shift-applications/process', [ShiftRequestController::class, 'process'])->name('shift-requests.process');
     });
 
     Route::resource('user-documents', UserDocumentController::class);

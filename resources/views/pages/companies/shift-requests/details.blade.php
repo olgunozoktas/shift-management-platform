@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+
+    @if($success = getDataFromSession('success'))
+        <section>
+            <div class="py-2 px-4 bg-green-600 text-white font-bold rounded-lg mb-4">{{ $success }}</div>
+        </section>
+    @elseif($error = getDataFromSession('error'))
+        <section>
+            <div class="py-2 px-4 bg-red-600 text-white font-bold rounded-lg mb-4">{{ $error }}</div>
+        </section>
+    @endif
+
     <section class="flex flex-col gap-2">
         <header class="flex flex-row items-center justify-between border-b border-gray-200 pb-4">
             <h1 class="text-black font-black text-lg">Shift Application > {{ $shiftRequest->id }} > Details</h1>
@@ -50,7 +61,6 @@
     </section>
 
     <form action="{{ route('shift-requests.process') }}" class="hidden" id="processApplicationForm" method="POST">
-        @method('PUT')
         @csrf
         <input type="hidden" name="application_id">
         <input type="hidden" name="status">
@@ -71,7 +81,7 @@
         function rejectApplication(id) {
             if(confirm('Would you like to reject this application?')) {
                 $("input[name=application_id]").val(id);
-                $("input[name=status]").val('reject');
+                $("input[name=status]").val('rejected');
                 $("#processApplicationForm").submit();
             }
         }

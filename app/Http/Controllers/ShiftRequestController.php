@@ -9,7 +9,11 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class ShiftRequestController extends Controller
 {
@@ -41,8 +45,29 @@ class ShiftRequestController extends Controller
         return view('pages.companies.shift-requests.details', compact('shiftRequest'));
     }
 
-    public function process(Request $request)
+    public function process(Request $request): RedirectResponse
     {
-        dd($request->all());
+        DB::beginTransaction();
+        try {
+            $shiftRequest = ShiftRequest::query()->with('shift')->find($request->input('application_id'));
+            $shiftRequest->status = $request->input('status');
+            $shiftRequest->save();
+
+            if($shiftRequest->status == 'approved') {
+                $shiftRequest->shift->assigned_user_id = $shiftRequest->user_id;
+                $shiftRequest->save();
+            }
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::alert('An error occurred while processing shift request', [$exception->getMessage(), $exception->getLine()]);
+
+            Session::put('error', 'An Error Occurred While Processing Shift Request');
+            return redirect()->back();
+        }
+
+        Session::put('success', 'Shift Request Successfully ' . ucfirst($request->input('status')));
+        return redirect()->route('shift-requests.index');
     }
 }
