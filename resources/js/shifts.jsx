@@ -50,7 +50,7 @@ export default function Shifts() {
         <section className="relative overflow-x-auto mt-4">
             {companies.length > 0 ? <div className="flex flex-col gap-2 w-max">
                 <label htmlFor="company">Select Company To List Shifts</label>
-                <select name="company" id="company" onChange={(companyId) => onChangeHandler(companyId)}
+                <select name="company" id="company" onChange={(event) => onChangeHandler(event.target.value)}
                         className="rounded-lg">
                     {companies.map((company) => <option key={company.id} value={company.id}>{company.name}</option>)}
                 </select>
@@ -81,7 +81,7 @@ export default function Shifts() {
                         </td>
                     </tr>) :
                     <tr className="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td colSpan="5" className="py-4">No Shifts Found In Your Company</td>
+                        <td colSpan="5" className="py-4">No Shifts Found In Selected Company</td>
                     </tr>
                 }
                 </tbody>

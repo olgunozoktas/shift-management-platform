@@ -3,6 +3,8 @@
 use App\Models\Application;
 use App\Models\Company;
 use App\Models\CompanyUser;
+use App\Models\Shift;
+use App\Models\ShiftRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Collection;
@@ -124,5 +126,13 @@ if (!function_exists('sendRawMail')) {
             $mail->to($emails);
             $mail->subject($subject);
         });
+    }
+}
+
+if (!function_exists('pendingShiftRequests')) {
+    function pendingShiftRequests(): int
+    {
+        $shifts = Shift::query()->whereIn('company_id', getMyCompanyIds())->pluck('id')->toArray();
+        return ShiftRequest::query()->whereIn('shift_id', $shifts)->count();
     }
 }

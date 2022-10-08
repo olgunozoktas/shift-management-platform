@@ -94,14 +94,14 @@
             </a>
 
 
-            <a class="text-gray-100 {{ getCurrentRouteName() == 'example.table' ? 'bg-black border-l-4 border-blue-900' : 'border-l-4 border-transparent' }} flex items-center py-2.5 px-6 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 gap-2"
-               href="">
+            <a class="text-gray-100 {{ in_array(getCurrentRouteName(), ['shift-requests.index']) ? 'bg-black border-l-4 border-blue-900' : 'border-l-4 border-transparent' }} flex items-center py-2.5 px-6 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100 gap-2"
+               href="{{ route('shift-requests.index') }}">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                      xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                Pending Approvals ({{ \App\Models\User::where('status','pending')->count() }})
+                Shift Applications ({{ pendingShiftRequests() }})
             </a>
         @else
             @if(!hasApplication())
