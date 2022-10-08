@@ -11,6 +11,8 @@ export default defineConfig({
                 'resources/js/application.jsx',
                 'resources/js/shifts.jsx',
                 'resources/js/company-users.jsx',
+                'resources/js/my-schedules.jsx',
+                'resources/js/available-shifts.jsx',
             ],
             refresh: true,
         }),

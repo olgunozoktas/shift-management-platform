@@ -18,7 +18,7 @@ class ShiftController extends Controller
 
         $shifts = $shifts->map(function ($shift) {
             $obj = new \StdClass;
-            $obj->title = $shift->text;
+            $obj->title = $shift->text . ' (Available)';
             $obj->start = $shift->date_time;
             $obj->color = $shift->assigned_user_id == null ? 'green' : 'red';
             $obj->backgroundColor = 'red';

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @push('css')
-    <link href='{{ asset('js/fullcalendar/main.css') }}' rel='stylesheet' />
+    <link href='{{ asset('js/fullcalendar/main.css') }}' rel='stylesheet'/>
 @endpush
 
 @section('content')
@@ -25,11 +25,22 @@
             </a>
         </header>
 
+        <div class="flex flex-col gap-2 w-max">
+            <label for="company">Select Company To List Shifts</label>
+            <select name="company" id="company" onChange=""
+                    class="rounded-lg">
+                @foreach(getMyCompanies() as $company)
+                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
         <div id='calendar' class="mt-12"></div>
     </section>
 @endsection
 
 @push('js')
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src='{{ asset('js/fullcalendar/main.js') }}'></script>
     <script>
 
@@ -38,14 +49,13 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 events: {
-                    url: '{{ route('shifts.list') }}',
+                    url: '{{ route('shifts.calendar') }}',
                     method: 'POST',
                     extraParams: {
                         _token: '{{ csrf_token() }}',
-                        custom_param1: 'something',
-                        custom_param2: 'somethingelse'
+                        'company_id': $("#company").val()
                     },
-                    failure: function() {
+                    failure: function () {
                         alert('there was an error while fetching events!');
                     },
                     color: 'yellow',   // a non-ajax option

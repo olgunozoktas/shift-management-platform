@@ -7,8 +7,10 @@ use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpFoundation\Response;
 
 if (!function_exists('getCurrentUser')) {
     function getCurrentUser(): ?Authenticatable
@@ -93,5 +95,34 @@ if (!function_exists('getMyCompanies')) {
             ->select('name', 'companies.id', 'company_role')
             ->join('company_users', 'companies.id', '=', 'company_id')
             ->where('company_users.user_id', Auth::id())->get();;
+    }
+}
+
+if (!function_exists('isApplicationApproved')) {
+    function isApplicationApproved(): bool
+    {
+        return Application::query()->where('user_id', Auth::id())
+                ->where('status', 'approved')->first() != null;
+    }
+}
+
+if (!function_exists('isAllowedForCompanyOrAbort')) {
+    function isAllowedForCompanyOrAbort($companyId): bool
+    {
+        if (!in_array($companyId, getMyCompanyIds())) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Unauthorized');
+        }
+
+        return true;
+    }
+}
+
+if (!function_exists('sendRawMail')) {
+    function sendRawMail($emails, $subject, $message): void
+    {
+        Mail::raw($message, function ($mail) use ($emails, $subject) {
+            $mail->to($emails);
+            $mail->subject($subject);
+        });
     }
 }

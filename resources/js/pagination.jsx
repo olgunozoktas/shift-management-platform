@@ -20,9 +20,12 @@ export default function Pagination({data, clickHandler}) {
     }
 
     return <>
-        {data?.data?.length > 0 && data?.next_page_url ? <div className="flex flex-row justify-end mt-2 divide-x divide-gray-300">
-            <button className="py-2 px-4 bg-gray-400 text-white hover:bg-gray-500 rounded-l-lg" onClick={() => clickHandler(previousPage())}>Previous</button>
-            <button className="py-2 px-4 bg-gray-400 text-white hover:bg-gray-500 rounded-r-lg" onClick={() => clickHandler(nextPage())}>Next</button>
+        {data?.last_page > 1 ? <div className="flex flex-row justify-between mt-4">
+            <span>Last Page: {data?.last_page} / Current Page: {data?.current_page}</span>
+            <div className="flex flex-row divide-x divide-gray-300">
+                <button className="py-2 px-4 bg-gray-400 text-white hover:bg-gray-500 rounded-l-lg" onClick={() => clickHandler(previousPage())}>Previous</button>
+                <button className="py-2 px-4 bg-gray-400 text-white hover:bg-gray-500 rounded-r-lg" onClick={() => clickHandler(nextPage())}>Next</button>
+            </div>
         </div> : null}
     </>
 }

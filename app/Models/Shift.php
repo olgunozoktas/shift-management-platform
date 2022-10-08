@@ -16,10 +16,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property mixed assigned_user_id
  * @property mixed created_at
  * @property mixed updated_at
+ * @property Company company
  */
 class Shift extends Model
 {
+    const PICK_UP_REQUEST = 'Shift Pick Up Request';
+    const PICK_UP_APPROVED = 'Shift Request Approval';
+    const PICK_UP_REJECTED = 'Shift Request Reject';
+
     use HasFactory;
+
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
+    }
 
     public function jobRole(): BelongsTo
     {
@@ -29,5 +39,10 @@ class Shift extends Model
     public function assignedUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_user_id');
+    }
+
+    public function sendApprovalEmailToCompany()
+    {
+
     }
 }

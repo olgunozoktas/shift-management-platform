@@ -26,9 +26,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @property mixed created_at
  * @property mixed updated_at
  * @property Company company
- * @property CompanyUser companyUser
+ * @property CompanyUser[] companyUser
  * @property JobRole jobRole
- * @property UserDocument userDocuments
+ * @property UserDocument[] userDocuments
+ * @property ShiftRequest[] shiftRequests
  */
 class User extends Authenticatable
 {
@@ -99,5 +100,10 @@ class User extends Authenticatable
     public function userDocuments(): HasMany
     {
         return $this->hasMany(UserDocument::class);
+    }
+
+    public function shiftRequests(): HasMany
+    {
+        return $this->hasMany(ShiftRequest::class);
     }
 }
