@@ -39,7 +39,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('job-roles', JobRoleController::class);
         Route::resource('companies', CompanyController::class);
         Route::resource('applications', ApplicationController::class);
-        Route::resource('user-documents', UserDocumentController::class);
 
         /** Resource API requires session */
         Route::post('/application/{application}/approve', [ApplicationProcessController::class, 'approve'])->name('applications.approve');
@@ -54,7 +53,12 @@ Route::middleware('auth')->group(function () {
         /** Resource API requires session */
         Route::get('/company-users/{company}', [CompanyUserController::class, 'show'])->name('company-users.show');
         Route::get('/shift-applications', [ShiftRequestController::class, 'index'])->name('shift-requests.index');
+        Route::get('/shift-applications/{company}', [ShiftRequestController::class, 'show'])->name('shift-requests.show');
+        Route::get('/shift-applications/{shiftRequest}/details', [ShiftRequestController::class, 'details'])->name('shift-requests.details');
+        Route::put('/shift-applications/process', [ShiftRequestController::class, 'process'])->name('shift-requests.process');
     });
+
+    Route::resource('user-documents', UserDocumentController::class);
 
     /** Resource API requires session */
     Route::get('/my-companies', [MyCompanyController::class, 'index'])->name('my-companies.index');

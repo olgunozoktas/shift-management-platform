@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property mixed id
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property mixed status
  * @property mixed created_at
  * @property mixed updated_at
+ * @property Shift shift
  */
 class ShiftRequest extends Model
 {
@@ -20,4 +22,14 @@ class ShiftRequest extends Model
     const REJECTED = 'rejected';
 
     use HasFactory;
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function shift(): BelongsTo
+    {
+        return $this->belongsTo(Shift::class);
+    }
 }

@@ -26,9 +26,9 @@
         @php
             $manifest = json_decode(file_get_contents(asset('build/manifest.json')), true);
         @endphp
-        <script type="module" src="{{ asset("build/{$manifest['resources/js/shifts-requests.jsx']['file']}") }}"></script>
+        <script type="module" src="{{ asset("build/{$manifest['resources/js/shifts-applications.jsx']['file']}") }}"></script>
     @else
         @vitereactrefresh
-        @vite('resources/js/shifts-requests')
+        @vite('resources/js/shift-applications')
     @endif
 @endpush

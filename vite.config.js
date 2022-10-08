@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/js/company-users.jsx',
                 'resources/js/my-schedules.jsx',
                 'resources/js/available-shifts.jsx',
+                'resources/js/shift-applications.jsx',
             ],
             refresh: true,
         }),

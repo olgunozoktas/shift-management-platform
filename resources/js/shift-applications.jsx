@@ -5,10 +5,9 @@ import {Toaster} from "react-hot-toast";
 import {notifyError, notifySuccess} from "./Notification";
 import Pagination from "./pagination";
 
-export default function AvailableShifts() {
+export default function ShiftApplications() {
     const [companies, setCompanies] = useState([]);
-    const [availableShifts, setAvailableShifts] = useState([]);
-    const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+    const [applications, setApplications] = useState([]);
 
     useEffect(() => {
         loadCompanies();
@@ -17,40 +16,38 @@ export default function AvailableShifts() {
     function loadCompanies() {
         axios.get('/my-companies').then((res) => {
             setCompanies(res.data);
-            loadAvailableShifts(res.data[0].id);
-            setSelectedCompanyId(res.data[0].id);
+            loadShiftApplications(res.data[0].id);
         }).catch((error) => {
             console.log(error);
         })
     }
 
-    function loadAvailableShifts(companyId) {
-        axios.get('/available-shifts/' + companyId).then((res) => {
-            setAvailableShifts(res.data);
+    function loadShiftApplications(companyId) {
+        axios.get('/shift-applications/' + companyId).then((res) => {
+            setApplications(res.data);
         }).catch((error) => {
             console.log(error);
         })
     }
 
-    function loadAvailableShiftsFromPagination(url = null) {
+    function loadShiftApplicationsFromPagination(url = null) {
         if (url == null) {
             return;
         }
 
         axios.get(url).then((res) => {
-            setAvailableShifts(res.data);
+            setApplications(res.data);
         }).catch((error) => {
             console.log(error);
         })
     }
 
     const onChangeHandler = (companyId) => {
-        setSelectedCompanyId(companyId);
-        loadAvailableShifts(companyId);
+        loadShiftApplications(companyId);
     }
 
     const applyShift = (shiftId) => {
-        const currentAvailableShifts = [...availableShifts.data];
+        const currentAvailableShifts = [...applications.data];
         const findIndex = currentAvailableShifts.findIndex((shift) => shift.id === shiftId);
 
         if (currentAvailableShifts[findIndex].submitted === true) {
@@ -59,27 +56,27 @@ export default function AvailableShifts() {
         }
 
         currentAvailableShifts[findIndex].submitted = true;
-        const data = availableShifts;
+        const data = applications;
         data.data = currentAvailableShifts;
-        setAvailableShifts(data);
+        setApplications(data);
 
         if (confirm('Do you want to apply to this shift?')) {
             axios.post('/available-shifts/' + shiftId + '/apply').then((res) => {
                 if (res.data.status === 'success') {
                     notifySuccess(res.data.message);
-                    loadAvailableShifts(selectedCompanyId);
+                    loadShiftApplications(selectedCompanyId);
                 } else {
                     notifyError(res.data.message);
                 }
 
                 currentAvailableShifts[findIndex].submitted = false;
                 data.data = currentAvailableShifts;
-                setAvailableShifts(data);
+                setApplications(data);
             }).catch((error) => {
                 console.log(error);
                 currentAvailableShifts[findIndex].submitted = false;
                 data.data = currentAvailableShifts;
-                setAvailableShifts(data);
+                setApplications(data);
             })
         }
     }
@@ -107,6 +104,7 @@ export default function AvailableShifts() {
                    id="table">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr className="text-center bg-gray-100">
+                    <th scope="col" className="px-6 py-3">User</th>
                     <th scope="col" className="px-6 py-3">Job Role</th>
                     <th scope="col" className="px-6 py-3">Type</th>
                     <th scope="col" className="px-6 py-3">Date</th>
@@ -115,18 +113,19 @@ export default function AvailableShifts() {
                 </tr>
                 </thead>
                 <tbody>
-                {availableShifts?.data?.length > 0 ? availableShifts.data.map((shift) => <tr key={shift.id}
+                {applications?.data?.length > 0 ? applications.data.map((application) => <tr key={application.id}
                                                                                              className="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" className="w-1/4 px-6 py-4 font-medium text-gray-900 dark:text-white">
-                            {shift.job_role}
+                            {application.user.name}
                         </th>
-                        <td className="py-2">{shift.type}</td>
-                        <td className="py-2">{shift.date_time}</td>
-                        <td className="py-2">{shift.text ?? '-'}</td>
+                        <td className="py-2">{application.shift.job_role.definition}</td>
+                        <td className="py-2">{application.shift.type}</td>
+                        <td className="py-2">{application.shift.date_time}</td>
+                        <td className="py-2">{application.shift.text ?? '-'}</td>
                         <td className="flex flex-row items-center justify-center gap-2 py-2">
-                            <button onClick={() => applyShift(shift.id)}
-                                    className="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg">Apply
-                            </button>
+                            <a href={"/shift-applications/" + application.id + '/details'}
+                               className="py-2 px-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg">View Details
+                            </a>
                         </td>
                     </tr>) :
                     <tr className="text-center bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -135,13 +134,13 @@ export default function AvailableShifts() {
                 }
                 </tbody>
             </table>
-            <Pagination data={availableShifts} clickHandler={loadAvailableShiftsFromPagination}/>
+            <Pagination data={applications} clickHandler={loadShiftApplicationsFromPagination}/>
         </section>
     </>
 }
 
-let app = document.getElementById('available-shifts');
+let app = document.getElementById('shift-applications');
 if (app) {
     const root = createRoot(app);
-    root.render(<AvailableShifts/>);
+    root.render(<ShiftApplications/>);
 }
