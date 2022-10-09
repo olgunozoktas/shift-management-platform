@@ -1,11 +1,93 @@
 {
   "resources/js/app.js": {
-    "file": "assets/app.12adad4f.js",
+    "file": "assets/app.9b05fafb.js",
     "src": "resources/js/app.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.32611946.js"
+    ]
+  },
+  "resources/js/application.jsx": {
+    "file": "assets/application.b05a07d9.js",
+    "src": "resources/js/application.jsx",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.32611946.js",
+      "_jsx-runtime.5cafaefb.js",
+      "_Notification.c6a390b7.js"
+    ]
+  },
+  "resources/js/shifts.jsx": {
+    "file": "assets/shifts.f0f7418d.js",
+    "src": "resources/js/shifts.jsx",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.32611946.js",
+      "_jsx-runtime.5cafaefb.js",
+      "_pagination.8026c58a.js"
+    ]
+  },
+  "resources/js/company-users.jsx": {
+    "file": "assets/company-users.3190f1ac.js",
+    "src": "resources/js/company-users.jsx",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.32611946.js",
+      "_jsx-runtime.5cafaefb.js",
+      "_pagination.8026c58a.js"
+    ]
+  },
+  "resources/js/my-schedules.jsx": {
+    "file": "assets/my-schedules.b3e2b349.js",
+    "src": "resources/js/my-schedules.jsx",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.32611946.js",
+      "_jsx-runtime.5cafaefb.js",
+      "_pagination.8026c58a.js"
+    ]
+  },
+  "resources/js/available-shifts.jsx": {
+    "file": "assets/available-shifts.c0ac9022.js",
+    "src": "resources/js/available-shifts.jsx",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.32611946.js",
+      "_jsx-runtime.5cafaefb.js",
+      "_Notification.c6a390b7.js",
+      "_pagination.8026c58a.js"
+    ]
+  },
+  "resources/js/shift-applications.jsx": {
+    "file": "assets/shift-applications.2c7a776f.js",
+    "src": "resources/js/shift-applications.jsx",
+    "isEntry": true,
+    "imports": [
+      "_bootstrap.32611946.js",
+      "_jsx-runtime.5cafaefb.js",
+      "_pagination.8026c58a.js"
+    ]
+  },
+  "_bootstrap.32611946.js": {
+    "file": "assets/bootstrap.32611946.js"
+  },
+  "_jsx-runtime.5cafaefb.js": {
+    "file": "assets/jsx-runtime.5cafaefb.js"
+  },
+  "_Notification.c6a390b7.js": {
+    "file": "assets/Notification.c6a390b7.js",
+    "imports": [
+      "_jsx-runtime.5cafaefb.js"
+    ]
+  },
+  "_pagination.8026c58a.js": {
+    "file": "assets/pagination.8026c58a.js",
+    "imports": [
+      "_jsx-runtime.5cafaefb.js"
+    ]
   },
   "resources/css/app.css": {
-    "file": "assets/app.9832bba9.css",
+    "file": "assets/app.260b06be.css",
     "src": "resources/css/app.css",
     "isEntry": true
   }

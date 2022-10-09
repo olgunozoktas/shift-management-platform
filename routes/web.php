@@ -39,12 +39,12 @@ Route::middleware('auth')->group(function () {
         Route::resource('job-roles', JobRoleController::class);
         Route::resource('companies', CompanyController::class);
         Route::resource('applications', ApplicationController::class);
-
-        /** Resource API requires session */
-        Route::post('/application/{application}/approve', [ApplicationProcessController::class, 'approve'])->name('applications.approve');
-        Route::post('/application/{application}/reject', [ApplicationProcessController::class, 'reject'])->name('applications.reject');
-        Route::get('/application/{application}/show', [ApplicationProcessController::class, 'show'])->name('application.show');
     });
+
+    /** Resource API requires session */
+    Route::post('/application/{application}/approve', [ApplicationProcessController::class, 'approve'])->name('applications.approve');
+    Route::post('/application/{application}/reject', [ApplicationProcessController::class, 'reject'])->name('applications.reject');
+    Route::get('/application/{application}/show', [ApplicationProcessController::class, 'show'])->name('application.show');
 
     Route::middleware('company_admin')->group(function () {
         Route::resource('company-users', CompanyUserController::class);
