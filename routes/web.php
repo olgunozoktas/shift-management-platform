@@ -38,8 +38,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('job-roles', JobRoleController::class);
         Route::resource('companies', CompanyController::class);
-        Route::resource('applications', ApplicationController::class);
     });
+
+    Route::resource('applications', ApplicationController::class);
 
     /** Resource API requires session */
     Route::post('/application/{application}/approve', [ApplicationProcessController::class, 'approve'])->name('applications.approve');
