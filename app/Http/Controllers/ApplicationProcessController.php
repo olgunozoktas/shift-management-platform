@@ -43,12 +43,13 @@ class ApplicationProcessController extends Controller
             $user->phone_no = $request->input('phone_no');
             $user->save();
 
-            $companyUser = new CompanyUser();
-            $companyUser->company_id = $request->input('selected_company_id');
-            $companyUser->user_id = $user->id;
-            $companyUser->company_role = CompanyUser::CONTRACT_STAFF;
-            $companyUser->company_phone_no = $request->input('company_phone_no');
-            $companyUser->save();
+            CompanyUser::query()->firstOrNew([
+                'company_id' => $request->input('selected_company_id'),
+                'user_id' => $user->id
+            ], [
+                'company_role' => CompanyUser::CONTRACT_STAFF,
+                'company_phone_no' => $request->input('company_phone_no')
+            ]);
 
             foreach ($user->userDocuments as $userDocument) {
                 /** @var UserDocument $userDocument */

@@ -68,7 +68,7 @@
             <span class="text-red-500">{{ $message }}</span>
             @enderror
 
-            <p class="text-lg my-4 border-b pb-2 border-gray-200">Role</p>
+            <p class="text-lg my-4 border-b pb-2 border-gray-200">System Role</p>
 
             <label class="block">
                 <span class="text-gray-700">Role Selector</span>

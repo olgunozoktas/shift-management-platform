@@ -27,7 +27,7 @@
                 <tr class="text-center bg-gray-100">
                     <th scope="col" class="px-6 py-3">Name</th>
                     <th scope="col" class="px-6 py-3">Email Address</th>
-                    <th scope="col" class="px-6 py-3">Role</th>
+                    <th scope="col" class="px-6 py-3">System Role</th>
                     <th scope="col" class="px-6 py-3">Assigned Companies</th>
                     <th scope="col" class="px-6 py-3">Company Role</th>
                     <th scope="col" class="px-6 py-3">Job Role</th>

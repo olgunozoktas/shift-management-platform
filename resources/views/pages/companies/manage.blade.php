@@ -58,10 +58,10 @@
             @enderror
 
             <label class="block">
-                <span class="text-gray-700">Company Phone No (Country code must be entered)</span>
+                <span class="text-gray-700">Company Phone No (Country code must be entered) - Format (+Code)number</span>
                 <input type="tel" name="phone_no" value="{{ old('phone_no', isset($company) ? $company->phone_no : '') }}"
                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                       placeholder="" required>
+                       placeholder="Ex: +1123132131" required>
             </label>
 
             @error('phone_no')
